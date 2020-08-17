@@ -16,8 +16,8 @@ public class RoundController {
     @Autowired
     private RoundService roundService;
 
-    @GetMapping("start")
-    public Round startRound(@PathVariable UUID gameId) {
-        return this.roundService.startRound(gameId);
+    @GetMapping("new")
+    public Round startNewRound(@PathVariable UUID gameId) {
+        return this.roundService.startNewRound(gameId);
     }
 }

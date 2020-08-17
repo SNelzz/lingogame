@@ -1,5 +1,7 @@
 package nl.nielsdaalhuisen.lingogame.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class Round {
     private Long id;
     @OneToMany
     private List<Turn> turns = new ArrayList<>();
+    @JsonIgnore
     @ManyToOne
     private Word winningWord;
     private Integer winningWordLength;

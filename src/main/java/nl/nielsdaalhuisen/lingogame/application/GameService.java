@@ -19,8 +19,12 @@ public class GameService {
     public Game startGame() {
         Game g = new Game();
         Game savedGame = this.gameRepository.save(g);
-        this.roundService.startRound(savedGame.getId());
+        this.roundService.startNewRound(savedGame.getId());
         return savedGame;
+    }
+
+    public Game getGameById(UUID gameId) {
+        return this.gameRepository.findById(gameId).get();
     }
 
     public Game endGame(UUID gameId) {

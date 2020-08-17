@@ -16,6 +16,11 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @GetMapping("/{gameId}")
+    public Game getGame(@PathVariable UUID gameId) {
+        return this.gameService.getGameById(gameId);
+    }
+
     @GetMapping("/new")
     public Game startGame() {
         Game g = this.gameService.startGame();

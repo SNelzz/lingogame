@@ -16,7 +16,7 @@ public class RoundService {
     @Autowired
     private WordService wordService;
 
-    public Round startRound(UUID gameId) {
+    public Round startNewRound(UUID gameId) {
         Integer wordLength = this.gameService.getNewWordLength(gameId);
         Round round = new Round(this.wordService.getRandomWord(wordLength), wordLength);
         Round savedRound = this.roundRepository.save(round);
