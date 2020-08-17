@@ -10,7 +10,7 @@ public class Round {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany
-    private List<Turn> turns;
+    private List<Turn> turns = new ArrayList<>();
     @ManyToOne
     private Word winningWord;
     private Integer winningWordLength;
@@ -19,16 +19,16 @@ public class Round {
 
     public Round() {}
 
-    public Round(Word winningWord) {
-        turns = new ArrayList<>();
+    public Round(Word winningWord, Integer winningWordLength) {
+        this.winningWordLength = winningWordLength;
         this.winningWord = winningWord;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

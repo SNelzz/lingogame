@@ -13,7 +13,7 @@ public class Game {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
     @OneToMany
-    private List<Round> rounds;
+    private List<Round> rounds = new ArrayList<>();
     private Integer score;
     private GameStatus status;
 
@@ -22,7 +22,6 @@ public class Game {
     }
 
     public Game(Integer score) {
-        this.rounds = new ArrayList<>();
         this.score = score;
     }
 
