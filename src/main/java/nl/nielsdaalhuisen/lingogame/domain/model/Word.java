@@ -3,10 +3,11 @@ package nl.nielsdaalhuisen.lingogame.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-public class Word {
+public class Word implements Serializable {
     @Id
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
