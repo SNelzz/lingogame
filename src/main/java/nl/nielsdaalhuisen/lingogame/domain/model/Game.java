@@ -15,8 +15,11 @@ public class Game {
     @OneToMany
     private List<Round> rounds;
     private Integer score;
+    private GameStatus status;
 
-    public Game() {}
+    public Game() {
+        this.status = GameStatus.Started;
+    }
 
     public Game(Integer score) {
         this.rounds = new ArrayList<>();
@@ -53,5 +56,13 @@ public class Game {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
     }
 }

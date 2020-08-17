@@ -1,5 +1,6 @@
 package nl.nielsdaalhuisen.lingogame.infrastructure.web.controller;
 
+import nl.nielsdaalhuisen.lingogame.application.GameService;
 import nl.nielsdaalhuisen.lingogame.domain.model.Game;
 import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +14,17 @@ import java.util.UUID;
 @RequestMapping("game")
 public class GameController {
     @Autowired
-    private GameRepository gameRepository;
+    private GameService gameService;
 
     @GetMapping("/new")
-    public @ResponseBody String startGame() {
-        Game g = new Game();
-        g.setScore(10);
-        gameRepository.save(g);
-        return "saved";
+    public Game startGame() {
+        Game g = this.gameService.startGame();
+        return g;
     }
 
-    @GetMapping
-    public @ResponseBody List<UUID> getGames() {
-        List<UUID> ids = new ArrayList<>();
-        for(Game g : gameRepository.findAll()) {
-            ids.add(g.getId());
-        }
-        return ids;
+    @PatchMapping("{gameId}/end")
+    public Game endGame(@PathVariable UUID gameId) {
+        Game g = this.gameService.endGame(gameId);
+        return g;
     }
 }
