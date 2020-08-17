@@ -10,14 +10,14 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Integer index;
+    private Integer idx;
     private char letter;
     private FeedbackValue value;
 
     public Feedback() {}
 
     public Feedback(Integer index, char letter) {
-        this.index = index;
+        this.idx = index;
         this.letter = letter;
     }
 
@@ -29,12 +29,12 @@ public class Feedback {
         this.id = id;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getIdx() {
+        return idx;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setIdx(Integer index) {
+        this.idx = index;
     }
 
     public char getLetter() {

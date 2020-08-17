@@ -1,5 +1,6 @@
 package nl.nielsdaalhuisen.lingogame.domain.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 @Entity
 public class Word {
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
     private String value;
 

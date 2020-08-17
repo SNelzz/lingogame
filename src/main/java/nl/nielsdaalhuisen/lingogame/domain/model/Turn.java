@@ -12,13 +12,13 @@ public class Turn {
     @OneToMany
     private List<Feedback> feedbackList;
     private String guess;
-    private Integer index;
+    private Integer idx;
 
     public Turn() {}
 
     public Turn(Integer index) {
         this.feedbackList = new ArrayList<>();
-        this.index = index;
+        this.idx = index;
     }
 
     public long getId() {
@@ -45,11 +45,11 @@ public class Turn {
         this.guess = guess;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getIdx() {
+        return idx;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setIdx(Integer index) {
+        this.idx = index;
     }
 }
