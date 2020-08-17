@@ -1,7 +1,7 @@
 package nl.nielsdaalhuisen.lingogame.infrastructure.web.controller;
 
-import nl.nielsdaalhuisen.lingogame.application.RoundService;
-import nl.nielsdaalhuisen.lingogame.domain.model.Round;
+import nl.nielsdaalhuisen.lingogame.application.TurnService;
+import nl.nielsdaalhuisen.lingogame.domain.model.Turn;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("game/{gameId}/round")
-public class RoundController {
+@RequestMapping("game/{gameId}/round/{roundId}/turn")
+public class TurnController {
     @Autowired
-    private RoundService roundService;
+    private TurnService turnService;
 
-    @GetMapping("new")
-    public Round startNewRound(@PathVariable UUID gameId) throws GameEndedException {
-        return this.roundService.startNewRound(gameId);
+    @GetMapping("/new")
+    public Turn startNewTurn(@PathVariable UUID gameId, @PathVariable Long roundId) throws GameEndedException {
+        return this.turnService.startNewTurn(gameId, roundId);
     }
 }

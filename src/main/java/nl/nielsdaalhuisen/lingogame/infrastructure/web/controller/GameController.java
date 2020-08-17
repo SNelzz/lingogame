@@ -3,6 +3,7 @@ package nl.nielsdaalhuisen.lingogame.infrastructure.web.controller;
 import nl.nielsdaalhuisen.lingogame.application.GameService;
 import nl.nielsdaalhuisen.lingogame.domain.model.Game;
 import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
+import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class GameController {
     }
 
     @GetMapping("/new")
-    public Game startGame() {
+    public Game startGame() throws GameEndedException {
         Game g = this.gameService.startGame();
         return g;
     }

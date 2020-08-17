@@ -10,15 +10,16 @@ public class Turn {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany
-    private List<Feedback> feedbackList;
+    private List<Feedback> feedbackList = new ArrayList<>();
     private String guess;
     private Integer idx;
+    private String wordRepresentation;
 
     public Turn() {}
 
-    public Turn(Integer index) {
-        this.feedbackList = new ArrayList<>();
+    public Turn(Integer index, Integer winningWordLength, Word winningWord) {
         this.idx = index;
+        this.wordRepresentation = String.format("%1$-" + winningWordLength + "s", winningWord.getValue().charAt(0)).replace(' ', '_');
     }
 
     public Long getId() {
@@ -51,5 +52,13 @@ public class Turn {
 
     public void setIdx(Integer index) {
         this.idx = index;
+    }
+
+    public String getWordRepresentation() {
+        return wordRepresentation;
+    }
+
+    public void setWordRepresentation(String wordRepresentation) {
+        this.wordRepresentation = wordRepresentation;
     }
 }

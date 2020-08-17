@@ -4,6 +4,7 @@ import nl.nielsdaalhuisen.lingogame.domain.model.Game;
 import nl.nielsdaalhuisen.lingogame.domain.model.GameStatus;
 import nl.nielsdaalhuisen.lingogame.domain.model.Round;
 import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
+import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class GameService {
     @Autowired
     private RoundService roundService;
 
-    public Game startGame() {
+    public Game startGame() throws GameEndedException {
         Game g = new Game();
         Game savedGame = this.gameRepository.save(g);
         this.roundService.startNewRound(savedGame.getId());
@@ -25,6 +26,10 @@ public class GameService {
 
     public Game getGameById(UUID gameId) {
         return this.gameRepository.findById(gameId).get();
+    }
+
+    public GameStatus getGameStatusById(UUID gameId) {
+        return this.gameRepository.findById(gameId).get().getStatus();
     }
 
     public Game endGame(UUID gameId) {

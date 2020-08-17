@@ -2,6 +2,7 @@ package nl.nielsdaalhuisen.lingogame;
 
 import nl.nielsdaalhuisen.lingogame.application.GameService;
 import nl.nielsdaalhuisen.lingogame.application.RoundService;
+import nl.nielsdaalhuisen.lingogame.application.TurnService;
 import nl.nielsdaalhuisen.lingogame.application.WordService;
 import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.client.WordClient;
@@ -29,5 +30,10 @@ public class AppConfig {
     @Bean
     public WordClient wordClient() {
         return new WordClient();
+    }
+
+    @Bean
+    public TurnService turnService() {
+        return new TurnService();
     }
 }

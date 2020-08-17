@@ -70,4 +70,8 @@ public class Round {
     public void setWin(boolean win) {
         this.win = win;
     }
+
+    public void addTurn(Turn turn) {
+        this.turns.add(turn);
+    }
 }
