@@ -9,6 +9,7 @@ import nl.nielsdaalhuisen.lingogame.domain.repository.WordRepository;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.UUID;
 
 public class RoundService {
@@ -38,9 +39,15 @@ public class RoundService {
         return this.roundRepository.findById(roundId).get();
     }
 
-    public void addTurn(Long roundId, Turn turn) {
+    public Round addTurn(Long roundId, Turn turn) {
         Round round = this.roundRepository.findById(roundId).get();
         round.addTurn(turn);
+        return this.roundRepository.save(round);
+    }
+
+    public void setWin(Long roundId, Boolean result) {
+        Round round = this.roundRepository.findById(roundId).get();
+        round.setWin(result);
         this.roundRepository.save(round);
     }
 }

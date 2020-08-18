@@ -16,9 +16,10 @@ public class Feedback {
 
     public Feedback() {}
 
-    public Feedback(Integer index, char letter) {
+    public Feedback(Integer index, char letter, FeedbackValue feedbackValue) {
         this.idx = index;
         this.letter = letter;
+        this.value = feedbackValue;
     }
 
     public Long getId() {
