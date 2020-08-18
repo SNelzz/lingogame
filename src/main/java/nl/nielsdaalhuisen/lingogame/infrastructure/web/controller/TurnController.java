@@ -17,7 +17,7 @@ public class TurnController {
 
     @GetMapping("/new")
     public Round startNewTurn(@PathVariable UUID gameId, @PathVariable Long roundId) throws GameEndedException {
-        return this.turnService.startNewTurn(gameId, roundId);
+        return this.turnService.startNewTurn(gameId, roundId, "null");
     }
 
     @PostMapping("/{turnId}/guess")

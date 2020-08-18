@@ -20,7 +20,7 @@ public class TurnService {
     @Autowired
     public FeedbackService feedbackService;
 
-    public Round startNewTurn(UUID gameId, Long roundId) throws GameEndedException {
+    public Round startNewTurn(UUID gameId, Long roundId, String wordRepresentation) throws GameEndedException {
         Round round = this.roundService.getRoundById(roundId);
         Integer index = round.getTurns().size() + 1;
         if(index > round.getMaxTurns()) {
@@ -28,6 +28,9 @@ public class TurnService {
             throw new GameEndedException("The game was lost after too many turns.");
         } else {
             Turn turn = new Turn(index, round.getWinningWordLength(), round.getWinningWord());
+            if(!wordRepresentation.equals("null")) {
+                turn.setWordRepresentation(wordRepresentation);
+            }
             Turn savedTurn = this.turnRepository.save(turn);
             return this.roundService.addTurn(roundId, savedTurn);
         }
@@ -64,10 +67,9 @@ public class TurnService {
                     wordRepresentation += "_";
                 }
             }
-            turn.setWordRepresentation(wordRepresentation);
             Turn savedTurn = this.turnRepository.save(turn);
 
-            return this.startNewTurn(gameId,roundId);
+            return this.startNewTurn(gameId,roundId, wordRepresentation);
         }
         return this.roundService.getRoundById(roundId);
     }

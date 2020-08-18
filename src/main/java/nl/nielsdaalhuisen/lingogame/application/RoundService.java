@@ -29,7 +29,7 @@ public class RoundService {
             Integer wordLength = this.gameService.getNewWordLength(gameId);
             Round round = new Round(this.wordService.getRandomWord(wordLength), wordLength);
             Round savedRound = this.roundRepository.save(round);
-            this.turnService.startNewTurn(gameId,savedRound.getId());
+            this.turnService.startNewTurn(gameId,savedRound.getId(), "null");
             this.gameService.addRound(gameId, savedRound);
             return savedRound;
         }
