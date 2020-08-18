@@ -49,7 +49,7 @@ public class TurnService {
             feedbackList.sort(new Comparator<Feedback>() {
                 @Override
                 public int compare(Feedback o1, Feedback o2) {
-                    return o1.getIdx() > o2.getIdx() ? -1 : (o1.getIdx() < o2.getIdx()) ? 1: 0;
+                    return o1.getIdx().compareTo(o2.getIdx());
                 }
             });
 
