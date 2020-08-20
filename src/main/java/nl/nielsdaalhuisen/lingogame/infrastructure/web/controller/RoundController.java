@@ -2,6 +2,7 @@ package nl.nielsdaalhuisen.lingogame.infrastructure.web.controller;
 
 import nl.nielsdaalhuisen.lingogame.application.RoundService;
 import nl.nielsdaalhuisen.lingogame.domain.model.Round;
+import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.ElementNotFoundException;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class RoundController {
     private RoundService roundService;
 
     @GetMapping("new")
-    public Round startNewRound(@PathVariable UUID gameId) throws GameEndedException {
+    public Round startNewRound(@PathVariable UUID gameId) throws GameEndedException, ElementNotFoundException {
         return this.roundService.startNewRound(gameId);
     }
 }

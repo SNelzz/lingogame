@@ -3,6 +3,7 @@ package nl.nielsdaalhuisen.lingogame.application;
 import nl.nielsdaalhuisen.lingogame.domain.model.Feedback;
 import nl.nielsdaalhuisen.lingogame.domain.model.FeedbackValue;
 import nl.nielsdaalhuisen.lingogame.domain.repository.FeedbackRepository;
+import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.ElementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class FeedbackService {
     @Autowired
     public TurnService turnService;
 
-    public Boolean evaluateGuess(Long turnId, String winningWord, String guess) {
+    public Boolean evaluateGuess(Long turnId, String winningWord, String guess) throws ElementNotFoundException {
         char[] guessChars = guess.toCharArray();
         char[] winningChars = winningWord.toCharArray();
         List<Feedback> feedbackList = new ArrayList<>();

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/words")
+@RequestMapping("/word")
 public class WordController {
     @Autowired
     private WordService wordService;

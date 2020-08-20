@@ -2,6 +2,7 @@ package nl.nielsdaalhuisen.lingogame.application;
 
 import nl.nielsdaalhuisen.lingogame.domain.model.*;
 import nl.nielsdaalhuisen.lingogame.domain.repository.TurnRepository;
+import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.ElementNotFoundException;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.InvalidGuessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class TurnService {
     @Autowired
     public FeedbackService feedbackService;
 
-    public Round startNewTurn(UUID gameId, Long roundId, String wordRepresentation) throws GameEndedException {
+    public Round startNewTurn(UUID gameId, Long roundId, String wordRepresentation) throws GameEndedException, ElementNotFoundException {
         Round round = this.roundService.getRoundById(roundId);
         Integer index = round.getTurns().size() + 1;
         if(index > round.getMaxTurns()) {
@@ -36,14 +37,14 @@ public class TurnService {
         }
     }
 
-    public Round processGuess(UUID gameId, Long roundId, Long turnId, String guess) throws GameEndedException, InvalidGuessException {
+    public Round processGuess(UUID gameId, Long roundId, Long turnId, String guess) throws GameEndedException, InvalidGuessException, ElementNotFoundException {
         Round round = this.roundService.getRoundById(roundId);
         if(guess.length() != round.getWinningWordLength()) {
             throw new InvalidGuessException("Guessed word does not have the right amount of letters.");
         }
 
         Boolean correctWord = this.feedbackService.evaluateGuess(turnId, round.getWinningWord().getValue(), guess);
-        Turn turn = this.turnRepository.findById(turnId).orElseThrow();
+        Turn turn = this.turnRepository.findById(turnId).orElseThrow(() -> new ElementNotFoundException("The turn was not found"));
         turn.setGuess(guess);
         if(correctWord) {
             this.roundService.setWin(gameId, roundId, true);
@@ -69,8 +70,8 @@ public class TurnService {
         return this.roundService.getRoundById(roundId);
     }
 
-    public void setFeedback(Long turnId, List<Feedback> feedbackList) {
-        Turn turn = this.turnRepository.findById(turnId).orElseThrow();
+    public void setFeedback(Long turnId, List<Feedback> feedbackList) throws ElementNotFoundException {
+        Turn turn = this.turnRepository.findById(turnId).orElseThrow(() -> new ElementNotFoundException("The turn was not found"));
         turn.setFeedbackList(feedbackList);
         this.turnRepository.save(turn);
     }
