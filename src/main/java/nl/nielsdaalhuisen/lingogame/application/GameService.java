@@ -2,13 +2,13 @@ package nl.nielsdaalhuisen.lingogame.application;
 
 import nl.nielsdaalhuisen.lingogame.domain.model.Game;
 import nl.nielsdaalhuisen.lingogame.domain.model.GameStatus;
+import nl.nielsdaalhuisen.lingogame.domain.model.Highscore;
 import nl.nielsdaalhuisen.lingogame.domain.model.Round;
 import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class GameService {
@@ -16,6 +16,8 @@ public class GameService {
     private GameRepository gameRepository;
     @Autowired
     private RoundService roundService;
+    @Autowired
+    private HighscoreService highscoreService;
 
     public Game startGame() throws GameEndedException {
         Game g = new Game();
@@ -25,28 +27,27 @@ public class GameService {
     }
 
     public Game getGameById(UUID gameId) {
-        return this.gameRepository.findById(gameId).get();
+        return this.gameRepository.findById(gameId).orElseThrow();
     }
 
     public GameStatus getGameStatusById(UUID gameId) {
-        return this.gameRepository.findById(gameId).get().getStatus();
+        return this.gameRepository.findById(gameId).orElseThrow().getStatus();
     }
 
     public Game endGame(UUID gameId) {
-        Game g = this.gameRepository.findById(gameId).get();
+        Game g = this.gameRepository.findById(gameId).orElseThrow();
         g.setStatus(GameStatus.Ended);
-        Game savedGame = this.gameRepository.save(g);
-        return savedGame;
+        return this.gameRepository.save(g);
     }
 
     public void addRound(UUID gameId, Round round) {
-        Game g = this.gameRepository.findById(gameId).get();
+        Game g = this.gameRepository.findById(gameId).orElseThrow();
         g.addRound(round);
         this.gameRepository.save(g);
     }
 
     public Integer getNewWordLength(UUID gameId) {
-        Game g = this.gameRepository.findById(gameId).get();
+        Game g = this.gameRepository.findById(gameId).orElseThrow();
         List<Round> rounds = g.getRounds();
         if(rounds.isEmpty()) {
             return 5;
@@ -57,11 +58,20 @@ public class GameService {
                     return 6;
                 case 6:
                     return 7;
-                case 7:
-                    return 5;
                 default:
                     return 5;
             }
         }
+    }
+
+    public void addScore (UUID gameId, Integer score) {
+        Game g = this.gameRepository.findById(gameId).orElseThrow();
+        g.addScore(score);
+        this.gameRepository.save(g);
+    }
+
+    public Highscore saveHighscore(UUID gameId, String playerName) {
+        Game g = this.gameRepository.findById(gameId).orElseThrow();
+        return this.highscoreService.saveHighscore(g.getScore(), playerName);
     }
 }

@@ -2,6 +2,7 @@ package nl.nielsdaalhuisen.lingogame;
 
 import nl.nielsdaalhuisen.lingogame.application.*;
 import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
+import nl.nielsdaalhuisen.lingogame.infrastructure.data.SourceDeserializer;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.client.WordClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,9 +26,7 @@ public class AppConfig {
     }
 
     @Bean
-    public WordClient wordClient() {
-        return new WordClient();
-    }
+    public SourceDeserializer SourceDeserializer() {return new WordClient(); }
 
     @Bean
     public TurnService turnService() {
@@ -37,5 +36,10 @@ public class AppConfig {
     @Bean
     public FeedbackService feedbackService() {
         return new FeedbackService();
+    }
+
+    @Bean
+    public HighscoreService highscoreService() {
+        return new HighscoreService();
     }
 }

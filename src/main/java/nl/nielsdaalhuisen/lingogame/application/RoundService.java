@@ -3,13 +3,10 @@ package nl.nielsdaalhuisen.lingogame.application;
 import nl.nielsdaalhuisen.lingogame.domain.model.GameStatus;
 import nl.nielsdaalhuisen.lingogame.domain.model.Round;
 import nl.nielsdaalhuisen.lingogame.domain.model.Turn;
-import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
 import nl.nielsdaalhuisen.lingogame.domain.repository.RoundRepository;
-import nl.nielsdaalhuisen.lingogame.domain.repository.WordRepository;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.UUID;
 
 public class RoundService {
@@ -36,18 +33,19 @@ public class RoundService {
     }
 
     public Round getRoundById(Long roundId) {
-        return this.roundRepository.findById(roundId).get();
+        return this.roundRepository.findById(roundId).orElseThrow();
     }
 
     public Round addTurn(Long roundId, Turn turn) {
-        Round round = this.roundRepository.findById(roundId).get();
+        Round round = this.roundRepository.findById(roundId).orElseThrow();
         round.addTurn(turn);
         return this.roundRepository.save(round);
     }
 
-    public void setWin(Long roundId, Boolean result) {
-        Round round = this.roundRepository.findById(roundId).get();
+    public void setWin(UUID gameId, Long roundId, Boolean result) {
+        Round round = this.roundRepository.findById(roundId).orElseThrow();
         round.setWin(result);
+        this.gameService.addScore(gameId, round.calculateScore());
         this.roundRepository.save(round);
     }
 }

@@ -24,7 +24,7 @@ public class TurnService {
         Round round = this.roundService.getRoundById(roundId);
         Integer index = round.getTurns().size() + 1;
         if(index > round.getMaxTurns()) {
-            Game game = this.gameService.endGame(gameId);
+            this.gameService.endGame(gameId);
             throw new GameEndedException("The game was lost after too many turns.");
         } else {
             Turn turn = new Turn(index, round.getWinningWordLength(), round.getWinningWord());
@@ -43,39 +43,34 @@ public class TurnService {
         }
 
         Boolean correctWord = this.feedbackService.evaluateGuess(turnId, round.getWinningWord().getValue(), guess);
-        Turn turn = this.turnRepository.findById(turnId).get();
+        Turn turn = this.turnRepository.findById(turnId).orElseThrow();
         turn.setGuess(guess);
         if(correctWord) {
-            this.roundService.setWin(roundId, correctWord);
+            this.roundService.setWin(gameId, roundId, true);
         } else {
             List<Feedback> feedbackList = turn.getFeedbackList();
-            feedbackList.sort(new Comparator<Feedback>() {
-                @Override
-                public int compare(Feedback o1, Feedback o2) {
-                    return o1.getIdx().compareTo(o2.getIdx());
-                }
-            });
+            feedbackList.sort(Comparator.comparing(Feedback::getIdx));
 
-            String wordRepresentation = "";
+            StringBuilder wordRepresentation = new StringBuilder();
             char emptyChar = '_';
             for(int i = 0; i < feedbackList.size(); i++) {
                 if(feedbackList.get(i).getValue() == FeedbackValue.correct) {
-                    wordRepresentation += feedbackList.get(i).getLetter();
+                    wordRepresentation.append(feedbackList.get(i).getLetter());
                 } else if(turn.getWordRepresentation().charAt(i) != emptyChar) {
-                    wordRepresentation += turn.getWordRepresentation().charAt(i);
+                    wordRepresentation.append(turn.getWordRepresentation().charAt(i));
                 } else {
-                    wordRepresentation += "_";
+                    wordRepresentation.append("_");
                 }
             }
-            Turn savedTurn = this.turnRepository.save(turn);
+            this.turnRepository.save(turn);
 
-            return this.startNewTurn(gameId,roundId, wordRepresentation);
+            return this.startNewTurn(gameId,roundId, wordRepresentation.toString());
         }
         return this.roundService.getRoundById(roundId);
     }
 
     public void setFeedback(Long turnId, List<Feedback> feedbackList) {
-        Turn turn = this.turnRepository.findById(turnId).get();
+        Turn turn = this.turnRepository.findById(turnId).orElseThrow();
         turn.setFeedbackList(feedbackList);
         this.turnRepository.save(turn);
     }

@@ -15,11 +15,6 @@ public class TurnController {
     @Autowired
     private TurnService turnService;
 
-    @GetMapping("/new")
-    public Round startNewTurn(@PathVariable UUID gameId, @PathVariable Long roundId) throws GameEndedException {
-        return this.turnService.startNewTurn(gameId, roundId, "null");
-    }
-
     @PostMapping("/{turnId}/guess")
     public Round processGuess(@PathVariable UUID gameId, @PathVariable Long roundId, @PathVariable Long turnId, @RequestBody String guess) throws GameEndedException, InvalidGuessException {
         return this.turnService.processGuess(gameId, roundId, turnId, guess);

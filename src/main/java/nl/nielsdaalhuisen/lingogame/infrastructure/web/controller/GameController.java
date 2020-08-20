@@ -2,13 +2,11 @@ package nl.nielsdaalhuisen.lingogame.infrastructure.web.controller;
 
 import nl.nielsdaalhuisen.lingogame.application.GameService;
 import nl.nielsdaalhuisen.lingogame.domain.model.Game;
-import nl.nielsdaalhuisen.lingogame.domain.repository.GameRepository;
+import nl.nielsdaalhuisen.lingogame.domain.model.Highscore;
 import nl.nielsdaalhuisen.lingogame.infrastructure.web.exception.GameEndedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,13 +22,16 @@ public class GameController {
 
     @GetMapping("/new")
     public Game startGame() throws GameEndedException {
-        Game g = this.gameService.startGame();
-        return g;
+        return this.gameService.startGame();
     }
 
     @PatchMapping("{gameId}/end")
     public Game endGame(@PathVariable UUID gameId) {
-        Game g = this.gameService.endGame(gameId);
-        return g;
+        return this.gameService.endGame(gameId);
+    }
+
+    @PostMapping("{gameId}/highscore")
+    public Highscore saveHighscore(@PathVariable UUID gameId, @RequestBody String playerName) {
+        return this.gameService.saveHighscore(gameId,playerName);
     }
 }

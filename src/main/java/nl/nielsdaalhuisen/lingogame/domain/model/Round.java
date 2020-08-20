@@ -74,4 +74,21 @@ public class Round {
     public void addTurn(Turn turn) {
         this.turns.add(turn);
     }
+
+    public Integer calculateScore() {
+        int score = 0;
+        switch (this.winningWordLength) {
+            case 5:
+                score += 10;
+                break;
+            case 6:
+                score += 15;
+                break;
+            case 7:
+                score += 20;
+                break;
+        }
+        score += (maxTurns - turns.size()) * 5;
+        return score;
+    }
 }

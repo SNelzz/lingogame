@@ -15,11 +15,6 @@ public class WordController {
     @Autowired
     private WordService wordService;
 
-    @GetMapping
-    public List<Word> getWords() {
-        return this.wordService.getWords();
-    }
-
     @GetMapping("import")
     public List<Word> importWords() {
         return this.wordService.importWords();

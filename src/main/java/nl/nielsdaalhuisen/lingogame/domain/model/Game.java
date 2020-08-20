@@ -21,10 +21,6 @@ public class Game {
         this.status = GameStatus.Started;
     }
 
-    public Game(Integer score) {
-        this.score = score;
-    }
-
     public Integer getScore() {
         return score;
     }
