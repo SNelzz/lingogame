@@ -1,0 +1,30 @@
+version: v1.0
+name: Docker build
+blocks:
+  - name: Build
+    task:
+      jobs:
+        - name: Push build to Docker
+          commands:
+            - mvn -q package -Dmaven.test.skip=true
+            - echo "$DOCKER_PASSWORD" | docker login  --username "$DOCKER_USERNAME" --password-stdin
+            - 'docker pull "$DOCKER_USERNAME"/lingogame:latest || true'
+            - 'docker build --cache-from "$DOCKER_USERNAME"/lingogame:latest --build-arg ENVIRONMENT="${ENVIRONMENT}" -t "$DOCKER_USERNAME"/lingogame:$SEMAPHORE_WORKFLOW_ID .'
+            - 'docker push "$DOCKER_USERNAME"/lingogame:$SEMAPHORE_WORKFLOW_ID'
+      secrets:
+        - name: dockerhub
+      env_vars:
+        - name: MAVEN_OPTS
+          value: '-Dmaven.repo.local=.m2'
+        - name: ENVIRONMENT
+          value: dev
+      prologue:
+        commands:
+          - sem-version java 11
+          - checkout
+          - 'cache restore spring-pipeline-build-$SEMAPHORE_GIT_BRANCH-$(checksum pom.xml),spring-pipeline-build-$SEMAPHORE_GIT_BRANCH,spring-pipeline-build'
+          - cache restore
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
