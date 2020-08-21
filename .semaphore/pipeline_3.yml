@@ -1,0 +1,29 @@
+version: v1.0
+name: Deploy to Kubernetes
+blocks:
+  - name: Deploy to Kubernetes
+    task:
+      jobs:
+        - name: Deploy
+          commands:
+            - cat deployment.yml | envsubst | tee deployment.yml
+            - kubectl apply -f deployment.yml
+      secrets:
+        - name: dockerhub
+        - name: kubernetescluster
+        - name: prod-db-auth
+      env_vars:
+        - name: CLUSTER_NAME
+          value: lingogame-server
+      prologue:
+        commands:
+          - gcloud auth activate-service-account --key-file=.secrets.gcp.json
+          - gcloud auth configure-docker -q
+          - gcloud config set project $GCP_PROJECT_ID
+          - gcloud config set compute/zone $GCP_PROJECT_DEFAULT_ZONE
+          - gcloud container clusters get-credentials $CLUSTER_NAME --zone $GCP_PROJECT_DEFAULT_ZONE --project $GCP_PROJECT_ID
+          - checkout
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
