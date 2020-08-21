@@ -13,14 +13,11 @@ blocks:
             - 'docker push "$DOCKER_USERNAME"/lingogame:$SEMAPHORE_WORKFLOW_ID'
       secrets:
         - name: dockerhub
-        - name: prod-db-auth
       env_vars:
         - name: MAVEN_OPTS
           value: '-Dmaven.repo.local=.m2'
         - name: ENVIRONMENT
           value: production
-        - name: LINGOWORDS_API
-          value: 'http://35.195.142.9'
       prologue:
         commands:
           - sem-version java 11
