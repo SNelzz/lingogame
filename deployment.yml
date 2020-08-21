@@ -47,7 +47,7 @@ spec:
             - name: JDBC_DATABASE_PASSWORD
               value: "${JDBC_DATABASE_PASSWORD}"
             - name: LINGOWORDS_API
-              value: "${http://35.195.142.9}"
+              value: "http://35.195.142.9"
           readinessProbe:
             initialDelaySeconds: 60
             httpGet:
