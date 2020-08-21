@@ -18,7 +18,7 @@ blocks:
         - name: MAVEN_OPTS
           value: '-Dmaven.repo.local=.m2'
         - name: ENVIRONMENT
-          value: dev
+          value: production
         - name: LINGOWORDS_API
           value: 'http://35.195.142.9'
       prologue:
