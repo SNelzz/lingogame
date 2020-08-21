@@ -31,8 +31,8 @@ public class FeedbackService {
                 Feedback feedback = new Feedback(i+1, guessChars[i], FeedbackValue.correct);
                 Feedback savedFeedback = this.feedbackRepository.save(feedback);
                 feedbackList.add(savedFeedback);
-                result = true;
             }
+            result = true;
         } else {
             for (int i = 0; i < guessChars.length; i++) {
                 if(guessChars[i] == winningChars[i]) {

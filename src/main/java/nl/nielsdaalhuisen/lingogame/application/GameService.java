@@ -65,7 +65,7 @@ public class GameService {
         }
     }
 
-    public void addScore (UUID gameId, Integer score) throws ElementNotFoundException {
+    public void addScore(UUID gameId, Integer score) throws ElementNotFoundException {
         Game g = this.gameRepository.findById(gameId).orElseThrow(() -> new ElementNotFoundException("The game was not found"));
         g.addScore(score);
         this.gameRepository.save(g);

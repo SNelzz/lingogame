@@ -30,6 +30,9 @@ public class WordService {
                 words.add(w);
             }
         }
-        return words.get(rand.nextInt(words.size()));
+        if(words.size() > 0) {
+            return words.get(rand.nextInt(words.size()));
+        }
+        return null;
     }
 }

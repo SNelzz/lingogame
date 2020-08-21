@@ -14,7 +14,7 @@ public class Game {
     private UUID id;
     @OneToMany
     private List<Round> rounds = new ArrayList<>();
-    private Integer score;
+    private Integer score = 0;
     private GameStatus status;
 
     public Game() {

@@ -130,7 +130,7 @@ public class LingogameControllerTests {
     @Test
     @DisplayName("start a new round - happy")
     void StartNewRound() throws Exception {
-        Word word = new Word(UUID.randomUUID(), "tester");
+        Word word = new Word("tester");
         Round round = new Round();
         round.setWinningWord(word);
         round.setWinningWordLength(6);
@@ -176,7 +176,8 @@ public class LingogameControllerTests {
     @Test
     @DisplayName("import words from source - happy")
     void ImportWords() throws Exception {
-        Word word = new Word(UUID.randomUUID(), "tester");
+        Word word = new Word("tester");
+        word.setId((long) 1);
         List<Word> words = new ArrayList<>();
         words.add(word);
 
@@ -185,7 +186,7 @@ public class LingogameControllerTests {
         mockMvc.perform(get("/word/import").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].uuid").value(word.getUuid().toString()))
+                .andExpect(jsonPath("$[0].id").value(word.getId().toString()))
                 .andExpect(jsonPath("$[0].value").value(word.getValue()));
     }
 }

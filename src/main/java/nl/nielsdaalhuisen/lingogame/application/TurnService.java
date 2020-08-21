@@ -29,7 +29,7 @@ public class TurnService {
             throw new GameEndedException("The game was lost after too many turns.");
         } else {
             Turn turn = new Turn(index, round.getWinningWordLength(), round.getWinningWord());
-            if(!wordRepresentation.equals("null")) {
+            if(!wordRepresentation.equals("new")) {
                 turn.setWordRepresentation(wordRepresentation);
             }
             Turn savedTurn = this.turnRepository.save(turn);
@@ -60,7 +60,7 @@ public class TurnService {
                 } else if(turn.getWordRepresentation().charAt(i) != emptyChar) {
                     wordRepresentation.append(turn.getWordRepresentation().charAt(i));
                 } else {
-                    wordRepresentation.append("_");
+                    wordRepresentation.append(emptyChar);
                 }
             }
             this.turnRepository.save(turn);
