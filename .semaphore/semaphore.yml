@@ -1,0 +1,34 @@
+version: v1.0
+name: Lingogame CI
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Maven build
+    task:
+      jobs:
+        - name: Build
+          commands:
+            - sem-version java 11
+            - checkout
+            - cache restore
+            - mvn -q package -Dmaven.test.skip=true
+            - cache store
+  - name: Tests
+    task:
+      prologue:
+        commands:
+          - sem-version java 11
+          - checkout
+          - cache restore
+          - mvn -q test-compile -Dmaven.test.skip=true
+      jobs:
+        - name: Run Tests
+          commands:
+            - mvn test
+promotions:
+  - name: Dockerize
+    pipeline_file: pipeline_2.yml
+    auto_promote:
+      when: branch = 'master' AND result = 'passed'
