@@ -13,14 +13,11 @@ blocks:
             - 'docker push "$DOCKER_USERNAME"/lingogame:$SEMAPHORE_WORKFLOW_ID'
       secrets:
         - name: dockerhub
-        - name: prod-db-auth
       env_vars:
         - name: MAVEN_OPTS
           value: '-Dmaven.repo.local=.m2'
         - name: ENVIRONMENT
-          value: dev
-        - name: LINGOWORDS_API
-          value: 'http://35.195.142.9'
+          value: production
       prologue:
         commands:
           - sem-version java 11
@@ -31,3 +28,6 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
+promotions:
+  - name: Deploy to Kubernetes
+    pipeline_file: pipeline_3.yml
