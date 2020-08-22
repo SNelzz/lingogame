@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: lingogame-service
-          image: ${DOCKER_USERNAME}/lingowords:$SEMAPHORE_WORKFLOW_ID
+          image: ${DOCKER_USERNAME}/lingogame:$SEMAPHORE_WORKFLOW_ID
           imagePullPolicy: Always
           env:
             - name: ENVIRONMENT
